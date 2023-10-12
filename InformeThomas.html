@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.1.113">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Thomas Pineda - 1001505812, tpineda@unal.edu.co">
+
+<title>Trabajo 1 - Estadistica descriptiva consumo de agua en Manizales</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: 1;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="prueba_files/libs/clipboard/clipboard.min.js"></script>
+<script src="prueba_files/libs/quarto-html/quarto.js"></script>
+<script src="prueba_files/libs/quarto-html/popper.min.js"></script>
+<script src="prueba_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="prueba_files/libs/quarto-html/anchor.min.js"></script>
+<link href="prueba_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="prueba_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="prueba_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="prueba_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="prueba_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Trabajo 1 - Estadistica descriptiva consumo de agua en Manizales</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Thomas Pineda - 1001505812, tpineda@unal.edu.co </p>
+          </div>
+  </div>
+    
+    
+  </div>
+  
+
+</header>
+
+<div class="cell">
+
+</div>
+<hr>
+<hr>
+<div class="cell">
+
+</div>
+<p>En el portal de Datos Abiertos se tomó la <a href="https://www.datos.gov.co/Ambiente-y-Desarrollo-Sostenible/HIST-RICO-CONSUMO-ACUEDUCTO/wfdz-jbgc">una base de datos sobre el consumo de agua</a> publicado por E.S.P. Aguas de Manizales S.A. de Caldas.</p>
+<div class="cell">
+
+</div>
+<div class="cell">
+
+</div>
+<div class="cell">
+
+</div>
+<section id="descripción-general-de-la-base-de-datos-de-consumo." class="level2">
+<h2 class="anchored" data-anchor-id="descripción-general-de-la-base-de-datos-de-consumo.">Descripción general de la base de datos de consumo.</h2>
+<p>Se tiene una base de datos con 900 filas y 7 columnas donde se describe el consumo de agua en metros cúbicos (M3), su número de suscirptores (SUSCRIPTORES), el promedio de consumo por suscriptor (PROMEDIO), y el mes (MES) y el año (AÑO) del cual es el consumo, el estrato o tipo donde esta ubicado el suscriptor (CLASE_SERVICIO) y por ultimo una columna que hace referencia a la fecha completa (fecha).</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>   AÑO MES CLASE_SERVICIO SUSCRIPTORES     M3 PROMEDIO      fecha
+1 2019   1      ESTRATO 1         8926 101971    11.42 2019-01-01
+2 2019   1      ESTRATO 2        20319 259819    12.79 2019-01-01
+3 2019   1      ESTRATO 3        37344 456571    12.23 2019-01-01
+4 2019   1      ESTRATO 4        16218 170113    10.49 2019-01-01
+5 2019   1      ESTRATO 5         5906  55119     9.33 2019-01-01
+6 2019   1      ESTRATO 6        10599 110229    10.40 2019-01-01</code></pre>
+</div>
+</div>
+<p>Este DataBase posee los datos de los muncipios de Manizales y Villmaría desde enero del 2019 hasta diciembre del 2021</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>      AÑO            MES                      CLASE_SERVICIO  SUSCRIPTORES  
+ Min.   :2019   Min.   : 1.00   COMERCIAL            : 36    Min.   :    1  
+ 1st Qu.:2019   1st Qu.: 3.75   COMERCIAL VillamarÃ­a: 36    1st Qu.:   91  
+ Median :2020   Median : 6.50   ESPECIAL             : 36    Median :  360  
+ Mean   :2020   Mean   : 6.50   ESPECIAL Villamaría  : 36    Mean   : 4640  
+ 3rd Qu.:2021   3rd Qu.: 9.25   ESTRATO 1            : 36    3rd Qu.: 5964  
+ Max.   :2021   Max.   :12.00   ESTRATO 1 Villamaría : 36    Max.   :40042  
+                                (Other)              :684                   
+       M3              PROMEDIO          fecha           
+ Min.   :     2.0   Min.   :  1.00   Min.   :2019-01-01  
+ 1st Qu.:   979.8   1st Qu.: 11.50   1st Qu.:2019-09-23  
+ Median : 15220.0   Median : 15.39   Median :2020-06-16  
+ Mean   : 58989.9   Mean   : 53.48   Mean   :2020-06-16  
+ 3rd Qu.: 82345.8   3rd Qu.: 34.56   3rd Qu.:2021-03-08  
+ Max.   :470451.0   Max.   :745.00   Max.   :2021-12-01  
+                                                         </code></pre>
+</div>
+</div>
+<p>En el resumen de la base de datos se ve efectivamente que el menor año es 2019, mientras que el año maximo que se tiene registrado es de 2021, en la columna (CLASE_SERVICIO) podemos ver que para cada clase o tipo se tienen 36 datos lo que se puede inferir que por cada una de estas clases se tiene un dato mensual desde el año 2019 hasta el año 2021, o sea una serie de tiempo.</p>
+<p>Para la columna (SUSCRIPTORES) se ve que el minimo de suscriptores 1 mientras que el máximo es de 40042 suscriptores donde el 25% de los datos esta entre 1 - 91 suscriptores, el 50% de los datos entre 1 - 360 suscriptores, y después de acá el cuartil 3 está muy lejos de la mediana, lo que es un indicio de que los datos están muy dispersos y pueden haber dos o más poblaciones distintas (como lo pueden ser las clases o tipos de estratos), ya que el 75% de los datos están entre 1 - 4964 suscriptores, como la media esta muy lejos de la mediana se puede decir que la función de distribucion de esta columna (SUSCRIPTORES) pidría estar sesgada hacia la izquierda.</p>
+<p>En la descripción de los metros cúbicos consumidos (M3), se puede apreciar que los datos tienen valores extremos muy lejanos estre sí (2 <span class="math inline">\(m^3\)</span> - 470451 <span class="math inline">\(m^3\)</span>), con un promedio de 58989 <span class="math inline">\(m^3\)</span> de consumo, este valor medio esta bastante alejado de la mediana la cual nos dice que el 50% de los valores de consumo en <span class="math inline">\(m^3\)</span> están por debajo de los 15220 <span class="math inline">\(m^3\)</span>, lo cual se puede inferir que la función de distribución de estos consumos de agua posee una fuerte asimetría y estén sesgados hacía la izquierda.</p>
+<p>En la columna (PROMEDIO) se tiene tambien valores extremos muy alejados (1 <span class="math inline">\(m^3\)</span> - 745 <span class="math inline">\(m^3\)</span>), donde se tiene un valor promedio de 53 <span class="math inline">\(m^3\)</span> de agua consumida en promedio por cada suscriptor mensual.</p>
+<p>A continuación se muestra las clases o tipos de categorías diferentes en la columna (CLASE_SERVICIO):</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] ESTRATO 1                    ESTRATO 2                   
+ [3] ESTRATO 3                    ESTRATO 4                   
+ [5] ESTRATO 5                    ESTRATO 6                   
+ [7] COMERCIAL                    INDUSTRIAL                  
+ [9] OFICIAL                      SUM. CONTRUCTOR             
+[11] ESPECIAL                     RURAL ESTRATO 1             
+[13] RURAL ESTRATO 2              RURAL ESTRATO 3             
+[15] RURAL ESTRATO 4              RURAL ESTRATO 5             
+[17] RURAL ESTRATO 6              ESTRATO 1 Villamaría        
+[19] ESTRATO 2 Villamaría         ESTRATO 3 Villamaría        
+[21] ESTRATO 4 Villamaría         COMERCIAL VillamarÃ­a       
+[23] INDUSTRIAL VillamarÃ­a       ESPECIAL Villamaría         
+[25] SUM. CONSTRUCTOR VillamarÃ­a
+25 Levels: COMERCIAL COMERCIAL VillamarÃ­a ESPECIAL ... SUM. CONTRUCTOR</code></pre>
+</div>
+</div>
+</section>
+<section id="resumen-de-la-población-rural" class="level2">
+<h2 class="anchored" data-anchor-id="resumen-de-la-población-rural">Resumen de la población Rural</h2>
+<p>Se desea tener información acerca de la poblacion rural de manizales, así que para esto se trabaja solo con los datos que describan esta población:</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>      AÑO            MES                CLASE_SERVICIO  SUSCRIPTORES   
+ Min.   :2019   Min.   : 1.00   RURAL ESTRATO 1:36     Min.   :  97.0  
+ 1st Qu.:2019   1st Qu.: 3.75   RURAL ESTRATO 2:36     1st Qu.: 139.0  
+ Median :2020   Median : 6.50   RURAL ESTRATO 3:36     Median : 503.5  
+ Mean   :2020   Mean   : 6.50   RURAL ESTRATO 4:36     Mean   : 888.5  
+ 3rd Qu.:2021   3rd Qu.: 9.25   RURAL ESTRATO 5:36     3rd Qu.:1789.2  
+ Max.   :2021   Max.   :12.00   RURAL ESTRATO 6:36     Max.   :2290.0  
+       M3           PROMEDIO         fecha           
+ Min.   : 1159   Min.   : 9.19   Min.   :2019-01-01  
+ 1st Qu.: 3147   1st Qu.:12.49   1st Qu.:2019-09-23  
+ Median : 8164   Median :14.51   Median :2020-06-16  
+ Mean   :11433   Mean   :15.82   Mean   :2020-06-16  
+ 3rd Qu.:18977   3rd Qu.:19.12   3rd Qu.:2021-03-08  
+ Max.   :32477   Max.   :29.09   Max.   :2021-12-01  </code></pre>
+</div>
+</div>
+<p>La zona rural de Manizales se divide en estratos del 1 al 6, donde Se puede ver como en comparación con los resultados anteriores la cantidad de suscriptores, aunque aún sigue teniendo valores extremos lejanos (97 - 2290), la brecha se cierra un poco y la media y la mediana ahora son mucho más cercanas entre sí.</p>
+<p>También se ve este mismo comportamiento en el consumo en <span class="math inline">\(m^3\)</span> (M3), donde se tiene una media de 11433 <span class="math inline">\(m^3\)</span> y una mediana de 8164 <span class="math inline">\(m^3\)</span>, donde podemos inferir que se podría tener una distribución un poco más simétrica en comparación con los datos de (M3) anteriores.</p>
+<p>Ahora el promedio de consumo por suscriptor se encuentra entre 8.21 <span class="math inline">\(m^3\)</span> y 12.820 <span class="math inline">\(m^3\)</span> con una media y una mediana casi iguales lo que indíca un comportamiento mucho más estable y una función de distribución bastante simétrica.</p>
+</section>
+<section id="resumen-por-estrato-rural" class="level2">
+<h2 class="anchored" data-anchor-id="resumen-por-estrato-rural">Resumen por estrato rural</h2>
+<p>Para tener una mejor idea del comportamiento del consumo por suscriptor se muestran los resultados descriptivos para cada estrato de la zona rural de Manizales.</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>$`RURAL ESTRATO 1`
+       M3         SUSCRIPTORES     PROMEDIO    
+ Min.   :13553   Min.   :1468   Min.   : 9.19  
+ 1st Qu.:17127   1st Qu.:1720   1st Qu.:10.07  
+ Median :18990   Median :1790   Median :10.40  
+ Mean   :18382   Mean   :1753   Mean   :10.46  
+ 3rd Qu.:19707   3rd Qu.:1863   3rd Qu.:10.79  
+ Max.   :22889   Max.   :1895   Max.   :12.41  
+
+$`RURAL ESTRATO 2`
+       M3         SUSCRIPTORES     PROMEDIO    
+ Min.   :22077   Min.   :1811   Min.   :12.13  
+ 1st Qu.:25880   1st Qu.:2051   1st Qu.:12.42  
+ Median :27496   Median :2072   Median :12.86  
+ Mean   :27269   Mean   :2087   Mean   :13.07  
+ 3rd Qu.:28615   3rd Qu.:2198   3rd Qu.:13.50  
+ Max.   :32477   Max.   :2290   Max.   :14.87  
+
+$`RURAL ESTRATO 3`
+       M3         SUSCRIPTORES       PROMEDIO    
+ Min.   :10208   Min.   : 777.0   Min.   :11.97  
+ 1st Qu.:12188   1st Qu.: 945.2   1st Qu.:12.53  
+ Median :13564   Median : 976.5   Median :13.15  
+ Mean   :13649   Mean   :1021.7   Mean   :13.37  
+ 3rd Qu.:14950   3rd Qu.:1155.2   3rd Qu.:13.84  
+ Max.   :18579   Max.   :1228.0   Max.   :15.53  
+
+$`RURAL ESTRATO 4`
+       M3        SUSCRIPTORES      PROMEDIO    
+ Min.   :3387   Min.   :205.0   Min.   :16.52  
+ 1st Qu.:4146   1st Qu.:222.0   1st Qu.:18.85  
+ Median :4448   Median :224.0   Median :20.02  
+ Mean   :4478   Mean   :222.1   Mean   :20.14  
+ 3rd Qu.:4674   3rd Qu.:227.0   3rd Qu.:20.89  
+ Max.   :6121   Max.   :230.0   Max.   :26.61  
+
+$`RURAL ESTRATO 5`
+       M3        SUSCRIPTORES      PROMEDIO    
+ Min.   :1159   Min.   : 97.0   Min.   :11.95  
+ 1st Qu.:1466   1st Qu.: 99.0   1st Qu.:14.65  
+ Median :1566   Median :101.0   Median :15.57  
+ Mean   :1627   Mean   :100.5   Mean   :16.18  
+ 3rd Qu.:1798   3rd Qu.:102.0   3rd Qu.:17.94  
+ Max.   :2097   Max.   :104.0   Max.   :20.76  
+
+$`RURAL ESTRATO 6`
+       M3        SUSCRIPTORES    PROMEDIO    
+ Min.   :1814   Min.   :122   Min.   :14.87  
+ 1st Qu.:2724   1st Qu.:138   1st Qu.:18.87  
+ Median :3144   Median :139   Median :21.61  
+ Mean   :3194   Mean   :147   Mean   :21.71  
+ 3rd Qu.:3629   3rd Qu.:171   3rd Qu.:23.22  
+ Max.   :4820   Max.   :172   Max.   :29.09  </code></pre>
+</div>
+</div>
+<p>De este resumen cabe resaltar que en cada uno de los estratos (1 al 6) los datos en cada una de sus columnas (ME)(SUSCRIPTORES)(PROMEDIO) están muchisimo más estables, cada uno de sus cuartiles están cerca entre sí, así como la media y la mediana, lo que nos da un indicio de que la función de distribución de cada una de los datos de las columnas de cada estrato rural es bastante simétrica. En promedio el estrato rural 6 es el que se consume mas metros cúbicos de agua por persona (21.71 <span class="math inline">\(m^3\)</span>), y el estrato 1 es el que menos consume en promedio por persona (10.46 <span class="math inline">\(m^3\)</span>). En promedio en el estrato rural 2 se esta consumiendo más que en cualquier otro estrato (27269 <span class="math inline">\(m^3\)</span>), lo que es bastante consecuente con los datos ya que este estrato es de los que en promedio tiene mayores suscriptorers también (27269 suscriptores) junto con el estrato 1 (1753suscriptores), lo cual es lógico que tenga mayores consumos en metros cúbicos.</p>
+</section>
+<section id="comportamiento-gráfico-del-consumo-promedio-por-estrato." class="level2">
+<h2 class="anchored" data-anchor-id="comportamiento-gráfico-del-consumo-promedio-por-estrato.">Comportamiento gráfico del consumo promedio por estrato.</h2>
+<p>Finalmente, se muestra el comportamiento histórico de cada uno de los estratos del consumo promedio por suscriptor.</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="prueba_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>En esta gráfica se tiene la serie de tiempo del consumo promedio por persona en cada estrato rural, se puede observar como el estrato 6 en efecto es de los estratos que mayor consumo en promedio tiene por persona, también que los consumos del estrato 2 y 3 en promedio por persona no tiene mayor diferencia entre sí y que es basatnte evidente que desde el 2019 al 2021 el consumo del estarto 1 por persona en promedio ha sido la menor.</p>
+<p>Vemos una separación dada por la línea vertical roja, la cual nos indíca el inicio de las vacunas en colombia (primer etapa), donde se puede decir que en el estrato 4 y 6 se tiene una tendencia creciente este consumo promedio por persona pero se nota un cambio estructural con respecto a los datos anteriores, mientras que en el estrato rural 5 se empieza con una tendencia a disminuir pero luego se ve como incrementa, y por último para los estratos 1,2 y 3 se puede ver que este consumo se mantiene estable después del inicio de las vacunas en colombia.</p>
+</section>
+<section id="bibliografía-y-cibergrafía." class="level2">
+<h2 class="anchored" data-anchor-id="bibliografía-y-cibergrafía.">Bibliografía y cibergrafía.</h2>
+<p>– Serebrisky, Tomás. et al.&nbsp;El impacto del COVID-19 en la demanda de servicios. Abril 21 de 2020. https://blogs.iadb.org/agua/es/servicios-de-infraestructura-asequibles-para-todos-en-tiempos-de-coronavirus-y-mas-alla/.</p>
+<p>– Jaramillo-Londoño, Angela María. et al.&nbsp;Consumo de agua potable domiciliaria durante el confinamiento por COVID-19, en Bogotá (Colombia). Revista Biociencia. UNAD. Volumen 4. Número 1. Publicado en 2020-12-11</p>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

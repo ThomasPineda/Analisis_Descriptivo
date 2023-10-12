@@ -1,0 +1,179 @@
+---
+title: "Trabajo 1 - Estadistica descriptiva consumo de agua en Manizales"
+Subtitle: "Estratos 1-6 Zona Rural"
+author: "Thomas Pineda - 1001505812,   tpineda@unal.edu.co" 
+format: html 
+html:
+execute:
+  echo: false 
+  warning: false
+  message: false
+  theme: default
+---
+
+```{r}
+install.packages("rmarkdown")
+install.packages("contrib.url")
+```
+
+
+```{r}
+updateR()
+library(installr)
+```
+
+---
+
+---
+
+```{r}
+# Limpiar el entorno de cálculo para iniciar de cero.
+rm(list = ls())
+```
+
+En el portal de Datos Abiertos se tomó la [una base de datos sobre el consumo de agua](https://www.datos.gov.co/Ambiente-y-Desarrollo-Sostenible/HIST-RICO-CONSUMO-ACUEDUCTO/wfdz-jbgc) publicado por E.S.P. Aguas de Manizales S.A. de Caldas.
+
+```{r}
+# Lectura de la base de datos.
+consumo_agua <- read.csv("HIST_RICO_CONSUMO_ACUEDUCTO.csv", stringsAsFactors = TRUE)
+#consumo_agua <- read.csv("~/Estadistica descriptiva y exploratoria/Trabajo 1/HIST_RICO_CONSUMO_ACUEDUCTO.csv", stringsAsFactors = TRUE)
+
+# Fecha de inicio de la confinación por el COVID-19 con el fin de
+# destacar el efecto de la pandemia  en las gráficas. 
+inicio_confinamiento <- as.Date("2020/03/17")
+vacunas <- as.Date("2021/02/17")
+```
+
+```{r}
+# Adecuación y depuración de la base de datos
+
+# Construcción de la variable fecha
+consumo_agua$fecha <- with(consumo_agua, 
+                           as.Date(paste(AÑO, MES, "01",sep = "/")))
+
+# Agregar la tilde a Villamaría
+consumo_agua$CLASE_SERVICIO <-  factor(gsub("Villamaria", "Villamaría", 
+                                     consumo_agua$CLASE_SERVICIO))
+
+```
+
+```{r}
+# Selección de la población residencial
+consumo_agua_pobla <- consumo_agua |> 
+  subset(substring(consumo_agua$CLASE_SERVICIO, 1, 5) == "RURAL" &
+         substring(consumo_agua$CLASE_SERVICIO, 7, 14) != "ESTRATO") |>
+  droplevels()
+```
+
+## Descripción general de la base de datos de consumo.
+
+Se tiene una base de datos con 900 filas y 7 columnas donde se describe el consumo de agua en metros cúbicos (M3), su número de suscirptores (SUSCRIPTORES), el promedio de consumo por suscriptor (PROMEDIO), y el mes (MES) y el año (A?O) del cual es el consumo, el estrato o tipo donde esta ubicado el suscriptor (CLASE_SERVICIO) y por ultimo una columna que hace referencia a la fecha completa (fecha).
+
+```{r}
+head(consumo_agua)
+```
+
+Este DataBase posee los datos de los muncipios de Manizales y Villmaria desde enero del 2019 hasta diciembre del 2021
+
+
+
+```{r}
+summary(consumo_agua)
+```
+En el resumen de la base de datos se ve efectivamente que el menor año es 2019, mientras que el año maximo que se tiene registrado es de 2021, en la columna (CLASE_SERVICIO) podemos ver que para cada clase o tipo se tienen 36 datos lo que se puede inferir que por cada una de estas clases se tiene un dato mensual desde el año 2019 hasta el año 2021, o sea una serie de tiempo.
+
+Para la columna (SUSCRIPTORES) se ve que el minimo de suscriptores 1 mientras que el máximo es de 40042 suscriptores donde el 25% de los datos esta entre 1 - 91 suscriptores, el 50% de los datos entre 1 - 360 suscriptores, y después de acá el cuartil 3 está muy lejos de la mediana, lo que es un indicio de que los datos están muy dispersos y pueden haber dos o más poblaciones distintas (como lo pueden ser las clases o tipos de estratos), ya que el 75% de los datos están entre 1 - 4964 suscriptores, como la media esta muy lejos de la mediana se puede decir que la función de distribucion de esta columna (SUSCRIPTORES)  pidr?a estar sesgada hacia la izquierda.
+
+En la descripción de los metros cúbicos consumidos (M3), se puede apreciar que los datos tienen valores extremos muy lejanos estre s? (2 $m^3$ - 470451 $m^3$), con un promedio de 58989 $m^3$ de consumo, este valor medio esta bastante alejado de la mediana la cual nos dice que el 50% de los valores de consumo en $m^3$ están por debajo de los 15220 $m^3$, lo cual se puede inferir que la función de distribución de estos consumos de agua posee una fuerte asimetr?a y est?n sesgados hac?a la izquierda. 
+
+En la columna (PROMEDIO) se tiene tambien valores extremos muy alejados (1 $m^3$ - 745 $m^3$), donde se tiene un valor promedio de 53 $m^3$ de agua consumida en promedio por cada suscriptor mensual. 
+
+A continuación se muestra las clases o tipos de categor?as diferentes en la columna (CLASE_SERVICIO):
+
+
+```{r}
+unique(consumo_agua$CLASE_SERVICIO)
+```
+
+## Resumen de la población Rural 
+
+Se desea tener información acerca de la poblacion rural de manizales, as? que para esto se trabaja solo con los datos que describan esta poblaci?n: 
+
+
+```{r}
+summary(consumo_agua_pobla)
+```
+La zona rural de Manizales se divide en estratos del 1 al 6, donde Se puede ver como en comparación con los resultados anteriores la cantidad de suscriptores, aunque aún sigue teniendo valores extremos lejanos (97 - 2290), la brecha se cierra un poco y la media y la mediana ahora son mucho más cercanas entre s?.
+
+También se ve este mismo comportamiento en el consumo en $m^3$ (M3), donde se tiene una media de 11433 $m^3$ y una mediana de 8164 $m^3$, donde podemos inferir que se podr?a tener una distribución un poco más simétrica en comparación con los datos de (M3) anteriores. 
+
+Ahora el promedio de consumo por suscriptor se encuentra entre 8.21 $m^3$ y 12.820 $m^3$ con una media y una mediana casi iguales lo que ind?ca un comportamiento mucho más estable y una función de distribución bastante simétrica.
+
+
+
+## Resumen por estrato rural 
+
+Para tener una mejor idea del comportamiento del consumo por suscriptor se muestran los resultados descriptivos para cada estrato de la zona rural de Manizales.
+
+```{r}
+consumo_agua_pobla_div <- split(consumo_agua_pobla[,c("M3", "SUSCRIPTORES", "PROMEDIO")],
+                                consumo_agua_pobla$CLASE_SERVICIO)
+lapply(consumo_agua_pobla_div, summary)
+```
+De este resumen cabe resaltar que en cada uno de los estratos (1 al 6) los datos en cada una de sus columnas (ME)(SUSCRIPTORES)(PROMEDIO) están muchisimo más estables, cada uno de sus cuartiles están cerca entre sí, así como la media y la mediana, lo que nos da un indicio de que la función de distribución de cada una de los datos de las columnas de cada estrato rural es bastante simétrica. En promedio el estrato rural 6 es el que se consume mas metros cúbicos de agua por persona (21.71 $m^3$), y el estrato 1 es el que menos consume en promedio por persona (10.46 $m^3$). En promedio en el estrato rural 2 se esta consumiendo más que en cualquier otro estrato (27269 $m^3$), lo que es bastante consecuente con los datos ya que este estrato es de los que en promedio tiene mayores suscriptorers también (27269 suscriptores) junto con el estrato 1 (1753suscriptores), lo cual es lógico que tenga mayores consumos en metros cúbicos.
+
+
+
+## Comportamiento gráfico del consumo promedio por estrato.
+
+Finalmente, se muestra el comportamiento histórico de cada uno de los estratos del consumo promedio por suscriptor.
+
+```{r}
+colores <- c("magenta", "blue", "red", 
+             "turquoise1", "springgreen", "black")
+with(consumo_agua_pobla, plot(fecha, PROMEDIO, type = "n",
+                              las = 1,
+                              xlim = c(as.Date("2018/12/01"),
+                                       as.Date("2023/06/01")),
+                              main = "Consumo de agua\nen zona rural por estrato",
+                              ylab = "Consumo (m3/mes/suscriptor)"))
+with(consumo_agua_pobla |> subset(CLASE_SERVICIO == "RURAL ESTRATO 1"),
+     lines(fecha, PROMEDIO, col = colores[1], lwd = 2))
+with(consumo_agua_pobla |> subset(CLASE_SERVICIO == "RURAL ESTRATO 2"),
+     lines(fecha, PROMEDIO, col = colores[2], lwd = 2))
+with(consumo_agua_pobla |> subset(CLASE_SERVICIO == "RURAL ESTRATO 3"),
+     lines(fecha, PROMEDIO, col = colores[3], lwd = 2))
+with(consumo_agua_pobla |> subset(CLASE_SERVICIO == "RURAL ESTRATO 4"),
+     lines(fecha, PROMEDIO, col = colores[4], lwd = 2))
+with(consumo_agua_pobla |> subset(CLASE_SERVICIO == "RURAL ESTRATO 5"),
+     lines(fecha, PROMEDIO, col = colores[5], lwd = 2))
+with(consumo_agua_pobla |> subset(CLASE_SERVICIO == "RURAL ESTRATO 6"),
+     lines(fecha, PROMEDIO, col = colores[6], lwd = 2))
+legend(as.Date("2022/02/01"), 29.8,
+       legend = unique(consumo_agua_pobla$CLASE_SERVICIO),
+       col = colores,
+       pch = 15,
+       pt.cex = 1.5)
+abline(v = vacunas, col = "tomato", lwd = 2)
+
+legend(as.Date("2022/02/01"), 17,
+       legend = "Inicio\n vacunas",
+       col = "tomato",
+       lty = 10,
+       lwd = 3,
+       pt.cex = 1.5)
+
+```
+
+
+En esta gráfica se tiene la serie de tiempo del consumo promedio por persona en cada estrato rural, se puede observar como el estrato 6 en efecto es de los estratos que mayor consumo en promedio tiene por persona, también que los consumos del estrato 2 y 3 en promedio por persona no tiene mayor diferencia entre s? y que es basatnte evidente que desde el 2019 al 2021 el consumo del estarto 1 por persona en promedio ha sido la menor. 
+
+Vemos una separación dada por la l?nea vertical roja, la cual nos ind?ca el inicio de las vacunas en colombia (primer etapa), donde se puede decir que en el estrato 4 y 6 se tiene una tendencia creciente este consumo promedio por persona pero se nota un cambio estructural con respecto a los datos anteriores, mientras que en el estrato rural 5 se empieza con una tendencia a disminuir pero luego se ve como incrementa, y por último para los estratos 1,2 y 3 se puede ver que este consumo se mantiene estable después del inicio de las vacunas en colombia. 
+
+quarto render document.qmd
+
+## Bibliograf?a y cibergraf?a.
+
+-- Serebrisky, Tomás. et al. El impacto del COVID-19 en la demanda de servicios. Abril 21 de 2020. https://blogs.iadb.org/agua/es/servicios-de-infraestructura-asequibles-para-todos-en-tiempos-de-coronavirus-y-mas-alla/.
+
+-- Jaramillo-Londoño, Angela Mar?a. et al. Consumo de agua potable domiciliaria durante el confinamiento por COVID-19, en Bogotá (Colombia). Revista Biociencia. UNAD. Volumen 4. Número 1. Publicado en 2020-12-11
